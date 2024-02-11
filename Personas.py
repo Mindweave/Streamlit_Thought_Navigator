@@ -3,9 +3,11 @@ import requests
 import json
 import pandas as pd
 
+from config import OPENAI_API_KEY
+
 st.set_page_config(layout="wide") #sets the streamlit page to use the complete width of the screen
 
-OPENAI_API_KEY = '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'
+OPENAI_API_KEY = OPENAI_API_KEY
 OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions'
 
 personas = {
