@@ -148,7 +148,7 @@ Description: {personas[selected_persona_key]["Description"]}
 def main():
     st.title("Thought Navigator")
 
-    st.write("Write your thoughts, questions, or breakthroughs in the text box below. Your text will be interpreted in a way that's designed to inspire further research")
+    st.write("Write your thoughts, questions, or breakthroughs in the text box below. When your text is ready, click the 'Think Together' button below to receive new perspectives from AI personas.")
     topic = st.text_area("What's on your mind? (ctrl+enter)")
 
     st.write("Examples below:")
