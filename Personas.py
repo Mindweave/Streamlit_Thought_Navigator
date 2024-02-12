@@ -248,7 +248,7 @@ Description: {personas[selected_persona_key]["Description"]}
         #expert copy
         if persona_copy_button:
             #https://stackoverflow.com/questions/579687/how-do-i-copy-a-string-to-the-clipboard
-            copy_text = "What's on your mind?"+"\n\n"+self.input_text+"\n\n"+self.persona_type+" Persona"+": "+selected_persona_key+"\n\n"+st.session_state['persona_responses'][self.persona_type]
+            copy_text = "What's on your mind?"+"\n\n"+self.input_text+"\n\n"+self.persona_type+" Persona"+": "+selected_persona_key+"\n\n"+str(st.session_state['persona_responses'][self.persona_type])
             df=pd.DataFrame([copy_text]) #creating dataframe, putting text inside to copy
             df.to_clipboard(index=False,header=False) #copying text
 
