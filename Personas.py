@@ -121,6 +121,10 @@ if "selected_persona_details" not in st.session_state:
 if "messages" not in st.session_state.keys():
     st.session_state['messages'] = []
 
+# messages used in chat. Also used here to clear the chat history
+if "use_chat_typewriter_effect" not in st.session_state.keys():
+    st.session_state['use_chat_typewriter_effect'] = False
+
 # user input pulled into session state so it does not reset
 if "topic" not in st.session_state.keys(): 
     st.session_state['topic'] = ""
@@ -179,6 +183,7 @@ class persona_column:
             st.session_state['selected_persona_name'] = persona_name
             st.session_state['selected_persona_details'] = persona_details
             st.session_state['messages'] = [] #clear chat history
+            st.session_state['use_chat_typewriter_effect'] = False #user already saw text come in. No need to use typewriter.
             st.switch_page("pages/1_Chat.py")
         else: 
             st.warning("A first response is required to begin your chat with "+persona_name, icon=None)

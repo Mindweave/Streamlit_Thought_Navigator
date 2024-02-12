@@ -74,6 +74,7 @@ def main():
             if user_input := st.chat_input("Your question"): # Receive user input and save to chat history
                 current_prompt = full_user_prompt(user_input,st.session_state['selected_persona_details']) #surrounding text in persona specific text
                 st.session_state['messages'].append({"role": "user", "content": current_prompt})
+                st.session_state['use_chat_typewriter_effect'] = True
             
             # If last message is not from assistant, generate a new response
             if st.session_state.messages[-1]["role"] != "assistant":
@@ -90,8 +91,9 @@ def main():
                 with st.chat_message(message["role"]):
                     if(len(message['content'])>0): #has content to output
                         if message["role"] == "assistant":
-                            if i == len(st.session_state['messages'])-1: #output last persona message as typewriter
+                            if i == len(st.session_state['messages'])-1 and st.session_state['use_chat_typewriter_effect']: #output last persona message as typewriter
                                 st.write_stream(typewriter_output(message["content"])) #returns a stream with delays. Then writes the stream with the typewriter delays
+                                st.session_state['use_chat_typewriter_effect'] = False
                             else:
                                 st.write(message["content"]) #return full output of assistant
                         elif message["role"] == "system":
