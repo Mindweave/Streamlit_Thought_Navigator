@@ -104,92 +104,31 @@ personas = {
 
 #responses pulled into session state so they do not reset
 if "persona_responses" not in st.session_state:
-    st.session_state.persona_responses = {
+    st.session_state['persona_responses'] = {
 "Expert" : "", 
 "Critic" : "",
 "Emotional" : ""
 }
     
-class persona_column:
-    def __init__(self, thinking_button,persona_type,emoji_icon,input_text,persona_responses):
-        self.persona_type = persona_type
-        self.all_persona_refresh_button = thinking_button
-        self.input_text = input_text
-        self.persona_responses = persona_responses
-        self.emoji = emoji_icon #
+#selected persona name for chat
+if "selected_persona_name" not in st.session_state:
+    st.session_state['selected_persona_name'] = ""
 
-    def generate_column(self):
-        #expert selection
-        persona_list = list(filter(lambda x:personas[x]["Type"] == self.persona_type,personas.keys()))
-        selected_persona_key = st.selectbox(self.emoji+" "+self.persona_type+" "+"Persona", persona_list, index=0, placeholder="Choose a persona", disabled=False, label_visibility="visible")
-        selected_persona = personas[selected_persona_key]
-        
-        #expert expander
-        persona_expander = st.expander("Persona details", expanded=False)
-        persona_expander_text = f'''
-###### {self.persona_type}: *{selected_persona_key}*
-Description: {personas[selected_persona_key]["Description"]}
-'''
-        persona_expander.markdown(persona_expander_text)
+#selected persona details for chat
+if "selected_persona_details" not in st.session_state:
+    st.session_state['selected_persona_details'] = ""
 
-        #expert buttons
-        persona_button1, persona_button2, persona_button3 = st.columns([1,1,1]) #creating columns to put all buttons on one line
-        with persona_button1:
-            persona_copy_button = st.button("Copy","Copy "+self.persona_type)
-        with persona_button2:
-            persona_refresh_button = st.button("Refresh","Refresh "+self.persona_type)
-        with persona_button3:
-            persona_chat_button = st.button("Chat","Chat with "+self.persona_type)
+# messages used in chat. Also used here to clear the chat history
+if "messages" not in st.session_state.keys():
+    st.session_state['messages'] = []
 
-        #expert output
-        if self.all_persona_refresh_button or persona_refresh_button:
-            notification_text = random.choice(selected_persona["Requesting Response Array"]) #output random response text associated with the persona
-            st.toast(body=""+selected_persona_key+" "+notification_text,icon=self.emoji)
-            st.session_state.persona_responses[self.persona_type] = generate_response(self.input_text,selected_persona)
-        
-        #expert copy
-        if persona_copy_button:
-            #https://stackoverflow.com/questions/579687/how-do-i-copy-a-string-to-the-clipboard
-            copy_text = "What's on your mind?"+"\n\n"+self.input_text+"\n\n"+self.persona_type+" Persona"+": "+selected_persona_key+"\n\n"+st.session_state.persona_responses[self.persona_type]
-            df=pd.DataFrame([copy_text]) #creating dataframe, putting text inside to copy
-            df.to_clipboard(index=False,header=False) #copying text
-
-        #expert text output
-        if st.session_state.persona_responses[self.persona_type] != "": #expert_response has been made so output it. This handles cases where running other functions resets the output
-            st.write( st.session_state.persona_responses[self.persona_type]) 
+# user input pulled into session state so it does not reset
+if "topic" not in st.session_state.keys(): 
+    st.session_state['topic'] = ""
 
 
-def main():
-    st.title("Thought Navigator")
-
-    st.write("Write your thoughts, questions, or breakthroughs in the text box below. When your text is ready, click the 'Think Together' button below to receive new perspectives from AI personas.")
-    topic = st.text_area("What's on your mind? (ctrl+enter)")
-
-    st.write("Examples below:")
-    st.write("If our understanding of the world is mediated by our senses, how can we trust that the world we experience is real?")
-    st.write("Sometimes people in traffic can be pretty crazy. It makes me concerned that one day I might not react in time and get into an accident.")
-
-    thinking_button = st.button("Think together")
-        
-    col1, col2, col3 = st.columns(3)
-
-    with col1: #expert column
-        expert_column = persona_column(thinking_button,"Expert","🧐",topic,st.session_state.persona_responses)
-        expert_column.generate_column()
-
-    with col2:
-        critic_column = persona_column(thinking_button,"Critic","🤔",topic,st.session_state.persona_responses)
-        critic_column.generate_column()
-
-    with col3:
-        emotional_column = persona_column(thinking_button,"Emotional","😊",topic,st.session_state.persona_responses)
-        emotional_column.generate_column()
-    with st.sidebar:
-        st.subheader("App Capabilities")
-        st.write("This app is designed to help you work through your thoughts by viewing it from useful perspectives.\n\n Write what's on your mind in the text box. Then click 'Think Together' to hear alternative viewpoints from various personas.\n\n If you want to change these personas click the dropdown below, you can click refresh to get a new response from one persona. ")
-    #st.sidebar.write("Choosing a chef tailors the recipes to their unique training. Mrs. Jenkins is a southern homecooking specialist. Mr Romero will add an italian flare. Mr. Ramsay is an American chef who takes a modern spin on classic dishes.")
-#def generate_workout(topic, chef_choice):
-def generate_response(topic,selected_persona):
+#create generate response function based on persona details
+def generate_persona_response(topic,selected_persona):
 
     headers = {
         'Content-Type': 'application/json',
@@ -222,6 +161,102 @@ def generate_response(topic,selected_persona):
         return workout
     else:
         return f"Error: {response.status_code}, {response.json()}"
+
+#creating global function for receiving personas to generate responses
+if "generate_persona_response" not in st.session_state:
+    st.session_state['generate_persona_response'] = generate_persona_response
+    
+class persona_column:
+    def __init__(self, thinking_button,persona_type,emoji_icon,input_text,persona_responses):
+        self.persona_type = persona_type
+        self.all_persona_refresh_button = thinking_button
+        self.input_text = input_text
+        self.persona_responses = persona_responses
+        self.emoji = emoji_icon #
+
+    def setup_persona_chat(self,persona_name,persona_details):
+        if st.session_state['persona_responses'][self.persona_type] != "": #output has been made so a chat is possible
+            st.toast("Beginning chat")
+            st.session_state['selected_persona_name'] = persona_name
+            st.session_state['selected_persona_details'] = persona_details
+            st.session_state['messages'] = [] #clear chat history
+            st.switch_page("pages/1_Chat.py")
+        else: 
+            st.warning("A first response is required to begin your chat with "+persona_name, icon=None)
+
+    def generate_column(self):
+        #expert selection
+        persona_list = list(filter(lambda x:personas[x]["Type"] == self.persona_type,personas.keys()))
+        selected_persona_key = st.selectbox(self.emoji+" "+self.persona_type+" "+"Persona", persona_list, index=0, placeholder="Choose a persona", disabled=False, label_visibility="visible")
+        selected_persona = personas[selected_persona_key]
+        
+        #expert expander
+        persona_expander = st.expander("Persona details", expanded=False)
+        persona_expander_text = f'''
+###### {self.persona_type}: *{selected_persona_key}*
+Description: {personas[selected_persona_key]["Description"]}
+'''
+        persona_expander.markdown(persona_expander_text)
+
+        #expert buttons
+        persona_button1, persona_button2, persona_button3 = st.columns([1,1,1]) #creating columns to put all buttons on one line
+        with persona_button1:
+            persona_copy_button = st.button("Copy","Copy "+self.persona_type)
+        with persona_button2:
+            persona_refresh_button = st.button("Refresh","Refresh "+self.persona_type)
+        with persona_button3:
+            persona_chat_button = st.button("Chat","Chat with "+self.persona_type)
+
+        #expert output
+        if self.all_persona_refresh_button or persona_refresh_button:
+            notification_text = random.choice(selected_persona["Requesting Response Array"]) #output random response text associated with the persona
+            st.toast(body=""+selected_persona_key+" "+notification_text,icon=self.emoji)
+            st.session_state['persona_responses'][self.persona_type] = st.session_state['generate_persona_response'](self.input_text,selected_persona)
+        
+        #expert copy
+        if persona_copy_button:
+            #https://stackoverflow.com/questions/579687/how-do-i-copy-a-string-to-the-clipboard
+            copy_text = "What's on your mind?"+"\n\n"+self.input_text+"\n\n"+self.persona_type+" Persona"+": "+selected_persona_key+"\n\n"+st.session_state['persona_responses'][self.persona_type]
+            df=pd.DataFrame([copy_text]) #creating dataframe, putting text inside to copy
+            df.to_clipboard(index=False,header=False) #copying text
+
+        #expert chat
+        if persona_chat_button:
+            self.setup_persona_chat(selected_persona_key,selected_persona)
+
+        #expert text output
+        if st.session_state['persona_responses'][self.persona_type] != "": #expert_response has been made so output it. This handles cases where running other functions resets the output
+            st.write( st.session_state['persona_responses'][self.persona_type]) 
+
+
+def main():
+    st.title("Thought Navigator")
+
+    st.write("Write your thoughts, questions, or breakthroughs in the text box below. When your text is ready, click the 'Think Together' button below to receive new perspectives from AI personas.")
+    st.session_state['topic'] = st.text_area("What's on your mind? (ctrl+enter)")
+
+    st.write("Examples below:")
+    st.write("If our understanding of the world is mediated by our senses, how can we trust that the world we experience is real?")
+    st.write("Sometimes people in traffic can be pretty crazy. It makes me concerned that one day I might not react in time and get into an accident.")
+
+    thinking_button = st.button("Think together")
+        
+    col1, col2, col3 = st.columns(3)
+
+    with col1: #expert column
+        expert_column = persona_column(thinking_button,"Expert","🧐",st.session_state['topic'],st.session_state['persona_responses'])
+        expert_column.generate_column()
+
+    with col2:
+        critic_column = persona_column(thinking_button,"Critic","🤔",st.session_state['topic'],st.session_state['persona_responses'])
+        critic_column.generate_column()
+
+    with col3:
+        emotional_column = persona_column(thinking_button,"Emotional","😊",st.session_state['topic'],st.session_state['persona_responses'])
+        emotional_column.generate_column()
+    with st.sidebar:
+        st.subheader("App Capabilities")
+        st.write("This app is designed to help you work through your thoughts by viewing it from useful perspectives.\n\n Write what's on your mind in the text box. Then click 'Think Together' to hear alternative viewpoints from various personas.\n\n If you want to change these personas click the dropdown below, you can click refresh to get a new response from one persona. ")
 
 if __name__ == '__main__':
     main()
