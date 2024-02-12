@@ -104,7 +104,7 @@ def main():
         else:
             chat_requirements_notification() #data in variables did not meet all criteria
             #print out each variable
-            chat_variables_found(list_of_session_variables_needed)
+            #chat_variables_found(list_of_session_variables_needed)
     else:
         #did not have session variables ready   
         chat_requirements_notification()
