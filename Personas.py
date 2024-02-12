@@ -101,7 +101,6 @@ personas = {
     }
 }
 
-
 #responses pulled into session state so they do not reset
 if "persona_responses" not in st.session_state:
     st.session_state['persona_responses'] = {
@@ -116,7 +115,7 @@ if "selected_persona_name" not in st.session_state:
 
 #selected persona details for chat
 if "selected_persona_details" not in st.session_state:
-    st.session_state['selected_persona_details'] = ""
+    st.session_state['selected_persona_details'] = {}
 
 # messages used in chat. Also used here to clear the chat history
 if "messages" not in st.session_state.keys():
@@ -187,7 +186,19 @@ class persona_column:
     def generate_column(self):
         #expert selection
         persona_list = list(filter(lambda x:personas[x]["Type"] == self.persona_type,personas.keys()))
-        selected_persona_key = st.selectbox(self.emoji+" "+self.persona_type+" "+"Persona", persona_list, index=0, placeholder="Choose a persona", disabled=False, label_visibility="visible")
+        
+        selected_persona_key_index = 0
+        #if user already selected a persona for chatting. Keep that one active. Or if not, then keep the zero index 
+        if hasattr(st.session_state,'selected_persona_details') and st.session_state['selected_persona_details'] != {}:
+            if(st.session_state['selected_persona_details']['Type'] == self.persona_type): #user has selected a persona of this type
+                for i in range(0,len(persona_list)):
+                    if persona_list[i] == st.session_state['selected_persona_name']:
+                        selected_persona_key_index = i
+                        break
+                
+        selected_persona_key = st.selectbox(self.emoji+" "+self.persona_type+" "+"Persona", persona_list, index=selected_persona_key_index, placeholder="Choose a persona", disabled=False, label_visibility="visible")
+        
+        
         selected_persona = personas[selected_persona_key]
         
         #expert expander
@@ -233,7 +244,10 @@ def main():
     st.title("Thought Navigator")
 
     st.write("Write your thoughts, questions, or breakthroughs in the text box below. When your text is ready, click the 'Think Together' button below to receive new perspectives from AI personas.")
-    st.session_state['topic'] = st.text_area("What's on your mind? (ctrl+enter)")
+    if st.session_state['topic'] != "": 
+        st.session_state['topic'] = st.text_area("What's on your mind? (click out of box when text box done)",st.session_state['topic']) #keep topic if it exists
+    else: 
+        st.session_state['topic'] = st.text_area("What's on your mind? (click out of box when text box done)") #do not input any values into the textbox
 
     st.write("Examples below:")
     st.write("If our understanding of the world is mediated by our senses, how can we trust that the world we experience is real?")
