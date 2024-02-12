@@ -265,10 +265,11 @@ def main():
     st.title("Thought Navigator")
 
     st.write("Write your thoughts, questions, or breakthroughs in the text box below. When your text is ready, click the 'Think Together' button below to receive new perspectives from AI personas.")
+    topic_instruction_text = "What's on your mind? (click outside the text box when done)"
     if st.session_state['topic'] != "": 
-        st.session_state['topic'] = st.text_area("What's on your mind? (click out of box when text box done)",st.session_state['topic']) #keep topic if it exists
+        st.session_state['topic'] = st.text_area(topic_instruction_text,st.session_state['topic']) #keep topic if it exists
     else: 
-        st.session_state['topic'] = st.text_area("What's on your mind? (click out of box when text box done)") #do not input any values into the textbox
+        st.session_state['topic'] = st.text_area(topic_instruction_text) #do not input any values into the textbox
 
     st.write("Examples below:")
     st.write("If our understanding of the world is mediated by our senses, how can we trust that the world we experience is real?")
