@@ -3,7 +3,7 @@ import requests
 import json
 import pandas as pd
 import random
-
+import time
 
 st.set_page_config(layout="wide") #sets the streamlit page to use the complete width of the screen
 
@@ -36,6 +36,23 @@ def chat_variables_found(list_of_session_variables_needed):
         else:
             st.error("missing "+i+": "+str(st.session_state[i]),icon="⚠️")
 
+def typewriter_output(text_to_output):
+    split_text = text_to_output.split(" ")
+
+    grouped_split_text = [split_text[0]] #start with first word
+
+    for word in split_text:
+        if random.choice([True,False]):
+            #if true, group it with previous
+            grouped_split_text[len(grouped_split_text)-1] += " "+word
+        else:
+            #if false, create a new group
+            grouped_split_text.append(" "+word)
+
+    for words in grouped_split_text:
+        yield words
+        time.sleep(0.02)
+
 def main():
     #additional chat features: https://github.com/carolinedlu/llamaindex-chat-with-streamlit-docs/blob/main/streamlit_app.py
 
@@ -67,11 +84,16 @@ def main():
                         st.session_state.messages.append(message) # Add response to message history
 
             # Display the prior chat messages with cleanup
-            for message in st.session_state.messages: 
+            for i in range(0,len(st.session_state['messages'])):
+                message = st.session_state['messages'][i]
+
                 with st.chat_message(message["role"]):
                     if(len(message['content'])>0): #has content to output
                         if message["role"] == "assistant":
-                            st.write(message["content"]) #return full output of assistant
+                            if i == len(st.session_state['messages'])-1: #output last persona message as typewriter
+                                st.write_stream(typewriter_output(message["content"])) #returns a stream with delays. Then writes the stream with the typewriter delays
+                            else:
+                                st.write(message["content"]) #return full output of assistant
                         elif message["role"] == "system":
                             continue #ignore any system information
                         elif message["role"] == "user":
