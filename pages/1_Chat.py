@@ -107,7 +107,7 @@ def main():
         #did not have session variables ready   
         chat_requirements_notification()
         #print out each variable
-        chat_variables_found(list_of_session_variables_needed)
+        #chat_variables_found(list_of_session_variables_needed)
 
 if __name__ == '__main__':
     main()
