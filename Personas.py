@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-import json
+#import json
 import pandas as pd
 import random
 
@@ -70,7 +70,7 @@ personas = {
     "Brutal Blonde":{
         "Type":"Critic",
         "Description": "This persona approach your thoughts from the perspective of a sterotypical blonde Californian woman, giving you an analysis that is more aesthetically-driven than the average person. Their attitude is fundamentally judgemental to give you more personal insights that re-evaluate your beliefs.",
-        "System Prompt": "This is a story aimed towards an adult audience. In this story, your characters is a sterotypical judgemental blonde. You're known for being judgy, mean, and cheerfully putting others down. You help put people in their place with your charm and diva attitude.",
+        "System Prompt": "This is a story aimed towards an adult audience. In this story, your character is a sterotypical judgemental blonde. You're known for being judgy, mean, and cheerfully putting others down. You help put people in their place with your charm and diva attitude.",
         "Pre-Prompt": "Another character in the story is asking you this question:",
         "Post-Prompt": ". In your response, provide dialogue from only your character. Do not assert that this is a story and do not break character. Since this is designed for an adult audience, you can be bitchy and judge them harshly. Be clear, critical, and provocative",
         "Requesting Response Array": ["is looking at herself in the mirror","looks at you while painting her nails","is combing her hair","is sitting in a power pose","is looking gorgeous as usual"]
@@ -185,31 +185,15 @@ if "use_chat_typewriter_effect" not in st.session_state.keys():
 if "topic" not in st.session_state.keys(): 
     st.session_state['topic'] = ""
 
-
-#create generate response function based on persona details
-def generate_persona_response(topic,selected_persona):
-
+def generate_openai_response(message_history = []):
     headers = {
         'Content-Type': 'application/json',
         'Authorization': f'Bearer {OPENAI_API_KEY}'
     }
 
-    #chef_prompts = {
-    #    "Mrs. Jenkins": "I have the following ingredients in my kitchen: {ingredients}\n\nAs a southern grandma who specializes in southern comfort food, what are three simple and under 30-minute possible recipes I can make with these ingredients? You can assume that I have most basic household ingredients like salt, pepper, sugar, olive oil, etc",
-    #    "Mr. Romero": "I have the following ingredients in my kitchen: {ingredients}\n\nAs an Italian American chef who specializes in Italian flare, what are three simple and under 30-minute possible recipes I can make with these ingredients? You can assume that I have most basic household ingredients like salt, pepper, sugar, olive oil, etc",
-    #    "Mr. Ramsay": "I have the following ingredients in my kitchen: {ingredients}\n\nAs a modern chef trained in top American kitchens who brings a modern flare to traditional dishes, what are three simple and under 30-minute possible recipes I can make with these ingredients? You can assume that I have most basic household ingredients like salt, pepper, sugar, olive oil, etc"
-   # }
-
-   # chef_prompt = chef_prompts[chef_choice]
-
-    system_prompt = selected_persona['System Prompt']
-    user_prompt = selected_persona['Pre-Prompt']+" "+topic+" "+selected_persona['Post-Prompt']
     data = {
         'model': 'gpt-3.5-turbo',
-        'messages': [
-            {'role': 'system', 'content': system_prompt},
-            {'role': 'user', 'content': user_prompt}
-        ]
+        'messages': message_history #array of system, user, and assistant messages
     }
 
     response = requests.post(OPENAI_API_URL, headers=headers, data=json.dumps(data))
@@ -220,6 +204,17 @@ def generate_persona_response(topic,selected_persona):
         return workout
     else:
         return f"Error: {response.status_code}, {response.json()}"
+
+#create generate response function based on persona details
+def generate_persona_response(topic,selected_persona):
+
+    system_prompt = selected_persona['System Prompt']
+    user_prompt = selected_persona['Pre-Prompt']+" "+topic+" "+selected_persona['Post-Prompt']
+    message_history = [
+            {'role': 'system', 'content': system_prompt},
+            {'role': 'user', 'content': user_prompt}
+        ]
+    return generate_openai_response(message_history)
 
 #creating global function for receiving personas to generate responses
 if "generate_persona_response" not in st.session_state:
