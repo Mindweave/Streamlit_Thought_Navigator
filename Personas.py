@@ -205,6 +205,10 @@ def generate_openai_response(message_history = []):
     else:
         return f"Error: {response.status_code}, {response.json()}"
 
+#creating global function for using openai to generate responses
+if "generate_openai_response" not in st.session_state:
+    st.session_state['generate_openai_response'] = generate_openai_response
+
 #create generate response function based on persona details
 def generate_persona_response(topic,selected_persona):
 

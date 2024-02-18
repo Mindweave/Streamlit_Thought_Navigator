@@ -80,7 +80,7 @@ def main():
             if st.session_state.messages[-1]["role"] != "assistant":
                 with st.chat_message("assistant"):
                     with st.spinner("Thinking..."):
-                        response = st.session_state['generate_persona_response'](current_prompt,st.session_state['selected_persona_details'])
+                        response = st.session_state['generate_openai_response'](st.session_state['messages'])
                         message = {"role": "assistant", "content": response}
                         st.session_state.messages.append(message) # Add response to message history
 
