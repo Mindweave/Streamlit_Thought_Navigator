@@ -74,7 +74,7 @@ def main():
                     if len(st.session_state['style_checkboxes']) != len(list_of_styles): #if there are no checkboxes. Get the unique list of the checkboxes and add them in
                         st.session_state['style_checkboxes'].append(st.checkbox(label=list_of_styles[i],value=False,key="STYLE|"+list_of_styles[i],on_change= lambda : checked_box(i))) #making it unique by adding 'STYLE|' to prevent any duplicate ID checkboxes on the site
                     else:  #use the saved state of the checkboxes
-                        st.checkbox(label=list_of_styles[i],value=st.session_state['style_checkboxes'][i],key="STYLE|"+list_of_styles[i]) #making it unique by adding 'STYLE|' to prevent any duplicate ID checkboxes on the site
+                        st.checkbox(label=list_of_styles[i],value=st.session_state['style_checkboxes'][i],key="STYLE|"+list_of_styles[i],on_change= lambda : checked_box(i)) #making it unique by adding 'STYLE|' to prevent any duplicate ID checkboxes on the site
                 st.toast("Styles")
                 st.toast( st.session_state['style_checkboxes'] )
             with col2:
