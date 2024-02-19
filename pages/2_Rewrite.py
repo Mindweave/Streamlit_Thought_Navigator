@@ -87,7 +87,50 @@ style_personas = { #these personas are designed to have a single output of rewri
         "System Prompt": "Rewrite the following text using an with a can-do attitude. Use language that is easily excitable and highly-motivated",
         "Pre-Prompt": "",
         "Post-Prompt": ""
+    },
+    "Uncompromising":{
+        "Style":"Less Agreeable",
+        "Description": "Rewrite the text with a new tone.",
+        "System Prompt": "Rewrite the following text using an with a no-nonsense attitude. Use language that is uncompromising and unwavering",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Impersonal Attitude":{
+        "Style":"Less Agreeable",
+        "Description": "Rewrite the text with a new tone.",
+        "System Prompt": "Rewrite the following text using an with a firm tone. Use language that is terse, blunt, and impersonal",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Blunt but Fair":{
+        "Style":"Less Agreeable",
+        "Description": "Rewrite the text with a new tone.",
+        "System Prompt": "Rewrite the following text with a detailed explanation that elaborates on the ideas. Use language that is fair and balanced",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Commanding Presence":{
+        "Style":"More Assertive",
+        "Description": "Rewrite the text with a new tone.",
+        "System Prompt": "Rewrite the following text with a commanding tone. Use language that is authoritative, firm, and assured.",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Authoritative Expert":{
+        "Style":"More Assertive",
+        "Description": "Rewrite the text with a new tone.",
+        "System Prompt": "Rewrite the following text with authoritative expert language. Use language that expresses expertise, knowledge, and competence.",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Bigger Ego":{
+        "Style":"Less Agreeable",
+        "Description": "Rewrite the text with a new tone.",
+        "System Prompt": "Rewrite the following text using insensitive language. Use language that expresses a brash, self-centered viewpoint.",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
     }
+
 }
 
 # user's rewritten output pulled into session state so it does not reset
