@@ -223,7 +223,34 @@ def generate_persona_response(topic,selected_persona):
 #creating global function for receiving personas to generate responses
 if "generate_persona_response" not in st.session_state:
     st.session_state['generate_persona_response'] = generate_persona_response
-    
+
+def create_topic_text_box(page_instructions = "",input_instructions = ""):
+    st.write(page_instructions)
+    how_to_activate_input = "(click outside the text box when done)"
+    topic_instruction_text = input_instructions +" "+how_to_activate_input
+    st.session_state['create_persistent_text_box']('topic',topic_instruction_text,True)
+    #if st.session_state['topic'] != "": 
+    #    st.session_state['topic'] = st.text_area(topic_instruction_text,st.session_state['topic']) #keep topic if it exists
+    #else: 
+    #    st.session_state['topic'] = st.text_area(topic_instruction_text) #do not input any values into the textbox
+
+#creating global function for creating the topic text box so it is consistent across pages
+if "create_topic_text_box" not in st.session_state:
+    st.session_state['create_topic_text_box'] = create_topic_text_box
+
+def create_persistent_text_box(session_variable_name,full_input_instructions = "",allow_input = True):
+    '''
+    persistent text should be a session variable
+    ''' 
+    if st.session_state[session_variable_name] != "": 
+        st.session_state[session_variable_name] = st.text_area(label=full_input_instructions,value=st.session_state[session_variable_name],disabled=(not allow_input)) #keep topic if it exists
+    else: 
+        st.session_state[session_variable_name] = st.text_area(label=full_input_instructions,disabled=(not allow_input)) #do not input any values into the textbox
+
+#creating global function for creating any persistent text box so it is consistent across pages
+if "create_persistent_text_box" not in st.session_state:
+    st.session_state['create_persistent_text_box'] = create_persistent_text_box
+
 class persona_column:
     def __init__(self, thinking_button,persona_type,emoji_icon,input_text,persona_responses):
         self.persona_type = persona_type
@@ -303,12 +330,7 @@ Description: {personas[selected_persona_key]["Description"]}
 def main():
     st.title("Thought Navigator")
 
-    st.write("Write your thoughts, questions, or breakthroughs in the text box below. When your text is ready, click the 'Think Together' button below to receive new perspectives from AI personas.")
-    topic_instruction_text = "What's on your mind? (click outside the text box when done)"
-    if st.session_state['topic'] != "": 
-        st.session_state['topic'] = st.text_area(topic_instruction_text,st.session_state['topic']) #keep topic if it exists
-    else: 
-        st.session_state['topic'] = st.text_area(topic_instruction_text) #do not input any values into the textbox
+    st.session_state['create_topic_text_box']("Write your thoughts, questions, or breakthroughs in the text box below. When your text is ready, click the 'Think Together' button below to receive new perspectives from AI personas.","What's on your mind?")
 
     st.write("Examples below:")
     st.write("If our understanding of the world is mediated by our senses, how can we trust that the world we experience is real?")
