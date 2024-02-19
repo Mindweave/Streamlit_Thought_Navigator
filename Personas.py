@@ -351,9 +351,9 @@ def main():
     with col3:
         emotional_column = persona_column(thinking_button,"Emotional","😊",st.session_state['topic'],st.session_state['persona_responses'])
         emotional_column.generate_column()
-    with st.sidebar:
-        st.subheader("App Capabilities")
-        st.write("This app is designed to help you work through your thoughts by viewing it from useful perspectives.\n\n Write what's on your mind in the text box. Then click 'Think Together' to hear alternative viewpoints from various personas.\n\n If you want to change these personas click the dropdown below, you can click refresh to get a new response from one persona. ")
+    #with st.sidebar:#not sure if anything needs to be in the sidebar. I prefer just having the navigation there. Commented explanation below
+        #st.subheader("App Capabilities")
+        #st.write("This app is designed to help you work through your thoughts by viewing it from useful perspectives.\n\n Write what's on your mind in the text box. Then click 'Think Together' to hear alternative viewpoints from various personas.\n\n If you want to change these personas click the dropdown below, you can click refresh to get a new response from one persona. ")
 
 if __name__ == '__main__':
     main()

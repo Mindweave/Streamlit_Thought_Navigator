@@ -129,6 +129,20 @@ style_personas = { #these personas are designed to have a single output of rewri
         "System Prompt": "Rewrite the following text using insensitive language. Use language that expresses a brash, self-centered viewpoint.",
         "Pre-Prompt": "",
         "Post-Prompt": ""
+    },
+    "Helpful attitude":{
+        "Style":"More Excited",
+        "Description": "Rewrite the text with a new tone.",
+        "System Prompt": "Rewrite the following text expressing helpful intentions. Use language that is engaged, generous, and ready to help",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Emoji Texter":{
+        "Style":"Text Message",
+        "Description": "Rewrite the text with a new tone.",
+        "System Prompt": "Rewrite the following text as a text message. Add emojis into the text as well",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
     }
 
 }
