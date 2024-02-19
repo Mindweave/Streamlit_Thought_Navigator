@@ -30,9 +30,22 @@ style_personas = { #these personas are designed to have a single output of rewri
         "Description": "Write as a friendly email.",
         "System Prompt": "Rewrite the following text as an email. Avoiding using any common professional phrases",
         "Pre-Prompt": "",
-        "Post-Prompt": "",
-        "Requesting Response Array": ["types on their keyboard","drinks coffee","sips a macchiato","swivels in their chair","types without looking at the computer"]
+        "Post-Prompt": ""
     },
+    "Enthusiastic Tone":{
+        "Style":"Tone",
+        "Description": "Rewrite the text with a new tone.",
+        "System Prompt": "Rewrite the following text using an upbeat, positive, enthusiastic tone",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Haiku":{
+        "Style":"Poetry",
+        "Description": "Rewrite the text as a Haiku.",
+        "System Prompt": "Rewrite the following text a Haiku",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    }
 }
 
 # user's rewritten output pulled into session state so it does not reset
@@ -40,11 +53,19 @@ if "rewritten_output" not in st.session_state.keys():
     st.session_state['rewritten_output'] = ""
 
 #checkboxes and selection pulled into session state so they do not reset
-if "style_checkboxes" not in st.session_state:
-    st.session_state['style_checkboxes'] = []
+if "selected_styles" not in st.session_state:
+    st.session_state['selected_styles'] = {}
 
-def checked_box(box_number = 0):
+def checked_box(box_number):
+    st.toast(f"Box Number: {box_number}")
+    st.toast("Pre Styles")
+    st.toast( st.session_state['style_checkboxes'] )
     st.session_state['style_checkboxes'][box_number] = not st.session_state['style_checkboxes'][box_number]
+    st.toast("Post Styles")
+    st.toast( st.session_state['style_checkboxes'] )
+
+def test_input(input):
+    st.toast(input)
 
 def main():
         st.title("Rewrite Text")
@@ -70,26 +91,27 @@ def main():
                 list_of_styles.sort()
 
                 for i in range(0,len(list_of_styles)):
-                    #create checkboxes and save them persistently
-                    if len(st.session_state['style_checkboxes']) != len(list_of_styles): #if there are no checkboxes. Get the unique list of the checkboxes and add them in
-                        st.session_state['style_checkboxes'].append(st.checkbox(label=list_of_styles[i],value=False,key="STYLE|"+list_of_styles[i],on_change= lambda : checked_box(i))) #making it unique by adding 'STYLE|' to prevent any duplicate ID checkboxes on the site
-                    else:  #use the saved state of the checkboxes
-                        st.checkbox(label=list_of_styles[i],value=st.session_state['style_checkboxes'][i],key="STYLE|"+list_of_styles[i],on_change= lambda : checked_box(i)) #making it unique by adding 'STYLE|' to prevent any duplicate ID checkboxes on the site
-                st.toast("Styles")
-                st.toast( st.session_state['style_checkboxes'] )
+                    if len(st.session_state['selected_styles'].keys()) != len(list_of_styles): #initializing the list of styles to be false
+                        st.session_state['selected_styles'][list_of_styles[i]] = False
+                    
+                    style_checked = st.checkbox(label=list_of_styles[i],value=st.session_state['selected_styles'][list_of_styles[i]],key="STYLE|"+list_of_styles[i],on_change= lambda:test_input(f"STYLE|{list_of_styles[i]}")) #making it unique by adding 'STYLE|' to prevent any duplicate ID checkboxes on the site
+                    if style_checked:
+                        st.session_state['selected_styles'][list_of_styles[i]] = True
+                    else:
+                        st.session_state['selected_styles'][list_of_styles[i]] = False
             with col2:
                 st.header("Activate Rewriting Action")
                 list_of_actions = []
                 #get actions which are in user's selection of checkboxes 
-                selected_styles = list(filter(lambda checkbox:True == True,st.session_state['style_checkboxes']))
+                #selected_styles = list(filter(lambda checkbox:True == True,st.session_state['style_checkboxes']))
                # st.toast(selected_styles)
-                list_of_actions = list(filter(lambda key_value:style_personas[key_value]['Style'] in selected_styles,style_personas.keys())) #Return keys with the selected style
+                #list_of_actions = list(filter(lambda key_value:style_personas[key_value]['Style'] in selected_styles,style_personas.keys())) #Return keys with the selected style
                 
                 #sort list alphabetically
-                list_of_actions.sort()
+                #list_of_actions.sort()
 
-                for action_text in list_of_actions:
-                    st.button(label=action_text,key="REWRITE|"+action_text,) #making it unique by adding 'REWRITE|' to prevent any duplicate ID buttons on the site
+                #for action_text in list_of_actions:
+                #    st.button(label=action_text,key="REWRITE|"+action_text,) #making it unique by adding 'REWRITE|' to prevent any duplicate ID buttons on the site
 
 
 
