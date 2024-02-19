@@ -46,8 +46,22 @@ style_personas = { #these personas are designed to have a single output of rewri
         "Pre-Prompt": "",
         "Post-Prompt": ""
         },
+    "Apologetic Email":{
+        "Style":"Email",
+        "Description": "Write as an email with an apologetic tone.",
+        "System Prompt": "Rewrite the following text as an apologetic email. Be sincere and empathetic in your response",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+        },
+    "Jargon-Heavy Email":{
+        "Style":"Email",
+        "Description": "Write as an email with lots of Jargon.",
+        "System Prompt": "Rewrite the following text as a rigorous email. Be thorough, competent, and use jargon whenever possible",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+        },
     "Enthusiastic Tone":{
-        "Style":"Tone",
+        "Style":"More Excited",
         "Description": "Rewrite the text with a new tone.",
         "System Prompt": "Rewrite the following text using an upbeat, positive, enthusiastic tone",
         "Pre-Prompt": "",
@@ -57,6 +71,20 @@ style_personas = { #these personas are designed to have a single output of rewri
         "Style":"Poetry",
         "Description": "Rewrite the text as a Haiku.",
         "System Prompt": "Rewrite the following text a Haiku",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Funny Limmerick":{
+        "Style":"Poetry",
+        "Description": "Rewrite the text as a Haiku.",
+        "System Prompt": "Rewrite the following text a Dirty Limmerick. [This poem is intended for adult audiences so you are welcome to use crude and vulgar language]",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Take-Action Attitude":{
+        "Style":"More Excited",
+        "Description": "Rewrite the text with a new tone.",
+        "System Prompt": "Rewrite the following text using an with a can-do attitude. Use language that is easily excitable and highly-motivated",
         "Pre-Prompt": "",
         "Post-Prompt": ""
     }
@@ -74,18 +102,28 @@ def activate_style(input):
     st.toast("Rewriting: "+input)
     st.session_state['rewritten_output'] = st.session_state['generate_persona_response'](st.session_state['topic'],style_personas[input])
 
+def switch_input_and_output_text():
+    input_text = st.session_state['topic']
+    output_text = st.session_state['rewritten_output']
+    st.session_state['topic'] = output_text
+    st.session_state['rewritten_output'] = input_text
+
+
 def main():
         st.title("Rewrite Text")
         st.session_state['create_topic_text_box']("Write your thoughts, questions, or breakthroughs in the text box below. When your text is ready, click the buttons below to have the AI rewrite your text in a new style","What text would you like to rewrite?")
+
+        #Switch text button
+        st.button(label="🔀 Switch Text",key="Switch Text",on_click=switch_input_and_output_text)
 
         #Create output text box
         st.session_state['create_persistent_text_box']('rewritten_output',"Rewritten Output",False)
 
         #Container for both columns 
-        with st.container(height=300,border=True):
-            col1, col2 = st.columns(spec = 2, gap="small")
-            with col1:
-                st.header("Select Rewriting Styles")
+        col1, col2 = st.columns(spec = 2, gap="small")
+        with col1:
+            st.header("Select Rewriting Styles")
+            with st.container(height=290,border=True):
             
                 list_of_styles = []
                 for style_dict in style_personas.keys():
@@ -109,8 +147,9 @@ def main():
                         st.session_state['selected_styles'][list_of_styles[i]] = True
                     else:
                         st.session_state['selected_styles'][list_of_styles[i]] = False
-            with col2:
-                st.header("Activate Rewriting Action")
+        with col2:
+            st.header("Activate Rewriting Action")
+            with st.container(height=290,border=True):
                 list_of_actions = []
                 #get actions which are in user's selection of checkboxes 
                 selected_styles = list(filter(lambda checkbox_name:st.session_state['selected_styles'][checkbox_name] == True,st.session_state['selected_styles'].keys()))
@@ -123,7 +162,7 @@ def main():
                     st.button(label=action_text,key="REWRITE|"+action_text,on_click=activate_style,args=[action_text]) #making it unique by adding 'REWRITE|' to prevent any duplicate ID buttons on the site
                         #st.toast("Rewriting: "+action_text)
                         #st.session_state['rewritten_output'] = st.session_state['generate_persona_response'](st.session_state['topic'],style_personas[action_text])
-                        
+                    
 
 
 if __name__ == '__main__':
