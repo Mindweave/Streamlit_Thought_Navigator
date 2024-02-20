@@ -321,8 +321,8 @@ def main():
 
 
 if __name__ == '__main__':
-    #try:
-    main()
-    #except Exception as e: 
-    #    st.warning("Go to Personas page before navigating directly to this page",icon=None) #needs functions from Personas page to be added to session. Avoids writing duplicate code (would be convenient if they allowed a block of code to run when the website was accessed)
-    #    st.error(e)
+    try:
+        main()
+    except Exception as e: 
+        st.warning("Go to Personas page before navigating directly to this page",icon=None) #needs functions from Personas page to be added to session. Avoids writing duplicate code (would be convenient if they allowed a block of code to run when the website was accessed)
+    #    st.error(e) #hiding since users do not need to see errors. May want to uncomment the whole try catch if there is an actual error requiring manual review
