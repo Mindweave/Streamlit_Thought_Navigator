@@ -110,14 +110,14 @@ style_personas = { #these personas are designed to have a single output of rewri
         "Post-Prompt": ""
     },
     "Commanding Presence":{
-        "Style":"More Assertive",
+        "Style":"Less Agreeable",
         "Description": "Rewrite the text with a new tone.",
         "System Prompt": "Rewrite the following text with a commanding tone. Use language that is authoritative, firm, and assured.",
         "Pre-Prompt": "",
         "Post-Prompt": ""
     },
     "Authoritative Expert":{
-        "Style":"More Assertive",
+        "Style":"Less Agreeable",
         "Description": "Rewrite the text with a new tone.",
         "System Prompt": "Rewrite the following text with authoritative expert language. Use language that expresses expertise, knowledge, and competence.",
         "Pre-Prompt": "",
@@ -141,6 +141,104 @@ style_personas = { #these personas are designed to have a single output of rewri
         "Style":"Text Message",
         "Description": "Rewrite the text with a new tone.",
         "System Prompt": "Rewrite the following text as a text message. Add emojis into the text as well",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Step by Step Instructions":{
+        "Style":"Instructions",
+        "Description": "Rewrite the text as a set of instructions.",
+        "System Prompt": "Rewrite the following text as a set of step-by-step instruction. This is intended for beginners. Use language that is clear, emphasizes any complex points, and is above all helpful",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Mission Statement":{
+        "Style":"Instructions",
+        "Description": "Rewrite the text as a set of instructions.",
+        "System Prompt": "Rewrite the following text as a mission statement. This is intended to help guide strategic thinkers. Use language that is informative, motivational, and holistic",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Expanded Instructions":{
+        "Style":"Instructions",
+        "Description": "Rewrite the text as a set of instructions.",
+        "System Prompt": "Rewrite the following text as a guide. Expand on the steps and comment on any common mistakes or misconceptions to help the reader better plan using this guide.",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Key Points":{
+        "Style":"Summarization",
+        "Description": "Rewrite the text as a set of key points.",
+        "System Prompt": "Summarize the key points of the following text into a list. Use language that is concise and informative.",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Added Concluding Statement":{
+        "Style":"Summarization",
+        "Description": "Rewrite the text as a conclusion.",
+        "System Prompt": "Write a concluding statement for the following text. Imitate the language used in the original text",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Added Concluding Paragraph":{
+        "Style":"Summarization",
+        "Description": "Rewrite the text as a conclusion.",
+        "System Prompt": "Write a concluding paragraph for the following text. Imitate the language used in the original text",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Added Introductory Paragraph":{
+        "Style":"Summarization",
+        "Description": "Rewrite the text as a conclusion.",
+        "System Prompt": "Write an introductory paragraph for the following text. Imitate the language used in the original text",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Added Introductory Sentence":{
+        "Style":"Summarization",
+        "Description": "Rewrite the text as a conclusion.",
+        "System Prompt": "Write a sentence introducing the following text. Imitate the language used in the original text",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Suave":{
+        "Style":"More Charming",
+        "Description": "Rewrite the text as charming.",
+        "System Prompt": "Rewrite the text using a suave and charming tone. Use language that is alluring and piques interest.",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Welcoming Tone":{
+        "Style":"More Charming",
+        "Description": "Rewrite the text as charming.",
+        "System Prompt": "Rewrite the text using a welcoming tone. Use language that is graceful, socially aware, and considerate.",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "50s Graceful Socialite":{
+        "Style":"More Charming",
+        "Description": "Rewrite the text as charming.",
+        "System Prompt": "Rewrite the text using a graceful 50s tone. Use the kind of language reminiscient of the Hepburn and the Mid-Atlantic accent.",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Kindhearted":{
+        "Style":"More Empathetic",
+        "Description": "Rewrite the text as being more empathetic.",
+        "System Prompt": "Rewrite the text using a kindhearted tone using language that is empathetic and warm.",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Sympathetic":{
+        "Style":"More Empathetic",
+        "Description": "Rewrite the text as being more empathetic.",
+        "System Prompt": "Rewrite the text using a sympathetic tone. Use language that expresses kindness and sincerity.",
+        "Pre-Prompt": "",
+        "Post-Prompt": ""
+    },
+    "Compassionate":{
+        "Style":"More Empathetic",
+        "Description": "Rewrite the text as being more empathetic.",
+        "System Prompt": "Rewrite the text using a compassionate tone. Use language that expresses honesty, empathy, and care.",
         "Pre-Prompt": "",
         "Post-Prompt": ""
     }
