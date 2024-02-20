@@ -18,6 +18,13 @@ style_personas = { #these personas are designed to have a single output of rewri
         "Pre-Prompt": "",
         "Post-Prompt": "",
         },
+    "Personal Facebook Post":{
+        "Style":"Social Media",
+        "Description": "Write as a viral tweet",
+        "System Prompt": "Rewrite the user's text as a Facebook Post. Use sincere, thought-provoking language. Use emojis sparingly",
+        "Pre-Prompt": "",
+        "Post-Prompt": "",
+        },
     "Professional Email":{
         "Style":"Email",
         "Description": "Write as a professional email",
