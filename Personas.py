@@ -1,4 +1,4 @@
-import streamlit as st 
+import streamlit as st
 import requests
 import json
 import pandas as pd
@@ -167,7 +167,7 @@ if "persona_responses" not in st.session_state:
     
 #selected persona name for chat
 if "selected_persona_name" not in st.session_state:
-    st.session_state['selected_persona_name'] = ""
+    st.session_state['selected_persona_name'] = "" 
 
 #selected persona details for chat
 if "selected_persona_details" not in st.session_state:
